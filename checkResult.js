@@ -36,7 +36,7 @@ export async function checkResult({ page, drawno, gameType }) {
     await page.waitForSelector("#drawno");
     await page.type("#drawno", drawno);
 
-    const row = ["A", "B", "C", "D", "E"];
+    const row = ["A", "B", "C", "D", "E", "F"];
 
     const result = input.map((numbers, index) => {
       const transformedObj = {};

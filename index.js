@@ -5,12 +5,13 @@ import { checkResult } from "./checkResult.js";
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
 
-  const FIRST_DRAW = 5733;
+  const FIRST_DRAW = 5747;
 
   try {
-    for (let draw = FIRST_DRAW; true; draw--) {
+    for (let draw = FIRST_DRAW; true; draw++) {
       console.log("===========================================");
       console.log("");
+      await checkResult({ page, drawno: draw.toString(), gameType: "658" });
       await checkResult({ page, drawno: draw.toString(), gameType: "655" });
       await checkResult({ page, drawno: draw.toString(), gameType: "650" });
     }
