@@ -1,12 +1,11 @@
 import fs from "fs";
 
-// Constants
 const WAIT_TIME = 500; // Adjust the wait time as needed
 
 const delay = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
 
-export async function checkResult({ page, drawno, gameType }) {
+export async function checkResult({ winNums, page, drawno, gameType }) {
   const readFileAsync = (fileName) => {
     return new Promise((resolve, reject) => {
       fs.readFile(fileName, "utf8", (err, data) => {
@@ -69,10 +68,12 @@ export async function checkResult({ page, drawno, gameType }) {
     const fonts = await page.$$eval("font", (elements) =>
       elements
         .slice(0, -1)
-        .map((el) => el.textContent)
+        .map((el) => el.textContent ?? "")
         .reduce(
-          (acc, cur, index, array) =>
-            index % 3 === 0 ? acc.concat([array.slice(index, index + 3)]) : acc,
+          (acc, _, index, array) =>
+            index % 3 === 0
+              ? [...acc, [array[index], array[index + 1], array[index + 2]]]
+              : acc,
           [],
         ),
     );
@@ -96,6 +97,7 @@ export async function checkResult({ page, drawno, gameType }) {
     console.log("Draw No: " + txt_grey[0]);
     console.log("Date: " + dateTimeFormat);
     console.log("Game Type: " + gameType);
+    console.log("Winning Numbers:", winNums.join(","));
     console.log("---");
 
     for (const item of fonts) {
